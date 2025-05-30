@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "pwm.h": "c",
+        "platform_device.h": "c",
+        "device.h": "c",
+        "mod_devicetable.h": "c",
+        "delay.h": "c",
+        "can.h": "c",
+        "core.h": "c",
+        "math.h": "c",
+        "sysfs.h": "c",
+        "consumer.h": "c"
+    }
+}
