@@ -1,0 +1,37 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/home/developer/dm542/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	//
+CURRENT_PATH	Makefile	/^CURRENT_PATH := $(shell pwd)$/;"	m
+LINUX_KERNEL_PATH	Makefile	/^LINUX_KERNEL_PATH = \/sdk\/kernel$/;"	m
+clean	Makefile	/^clean:$/;"	t
+config_pluse	dm542.c	/^static void config_pluse(long pulse_count, struct dm542_data *data)$/;"	f	typeref:typename:void	file:
+dev	dm542.c	/^    struct device *dev;$/;"	m	struct:dm542_data	typeref:struct:device *	file:
+dir_gpio	dm542.c	/^    struct gpio_desc *dir_gpio;$/;"	m	struct:dm542_data	typeref:struct:gpio_desc *	file:
+dm542_attr_group	dm542.c	/^static const struct attribute_group dm542_attr_group = {$/;"	v	typeref:typename:const struct attribute_group	file:
+dm542_attrs	dm542.c	/^static struct attribute *dm542_attrs[] = {$/;"	v	typeref:struct:attribute * []	file:
+dm542_data	dm542.c	/^struct dm542_data$/;"	s	file:
+dm542_driver	dm542.c	/^static struct platform_driver dm542_driver = {$/;"	v	typeref:struct:platform_driver	file:
+dm542_of_match	dm542.c	/^static const struct of_device_id dm542_of_match[] = {$/;"	v	typeref:typename:const struct of_device_id[]	file:
+dm542_probe	dm542.c	/^static int dm542_probe(struct platform_device *pdev)$/;"	f	typeref:typename:int	file:
+dm542_remove	dm542.c	/^static int dm542_remove(struct platform_device *pdev)$/;"	f	typeref:typename:int	file:
+ena_gpio	dm542.c	/^    struct gpio_desc *ena_gpio;$/;"	m	struct:dm542_data	typeref:struct:gpio_desc *	file:
+enable_show	dm542.c	/^static ssize_t enable_show(struct device *dev, struct device_attribute *attr,$/;"	f	typeref:typename:ssize_t	file:
+enable_store	dm542.c	/^static ssize_t enable_store(struct device *dev, struct device_attribute *attr,$/;"	f	typeref:typename:ssize_t	file:
+kernel_modules	Makefile	/^kernel_modules:$/;"	t
+obj-m	Makefile	/^obj-m := dm542.o$/;"	m
+period_show	dm542.c	/^static ssize_t period_show(struct device *dev, struct device_attribute *attr,$/;"	f	typeref:typename:ssize_t	file:
+period_store	dm542.c	/^static ssize_t period_store(struct device *dev, struct device_attribute *attr,$/;"	f	typeref:typename:ssize_t	file:
+pulse_count	dm542.c	/^    long pulse_count;$/;"	m	struct:dm542_data	typeref:typename:long	file:
+pulse_count_show	dm542.c	/^static ssize_t pulse_count_show(struct device *dev,$/;"	f	typeref:typename:ssize_t	file:
+pulse_count_store	dm542.c	/^static ssize_t pulse_count_store(struct device *dev,$/;"	f	typeref:typename:ssize_t	file:
+pwm	dm542.c	/^    struct pwm_device *pwm;$/;"	m	struct:dm542_data	typeref:struct:pwm_device *	file:
+pwm_enable_show	dm542.c	/^static ssize_t pwm_enable_show(struct device *dev, struct device_attribute *attr,$/;"	f	typeref:typename:ssize_t	file:
+pwm_enable_store	dm542.c	/^static ssize_t pwm_enable_store(struct device *dev, struct device_attribute *attr,$/;"	f	typeref:typename:ssize_t	file:
