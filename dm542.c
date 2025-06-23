@@ -1,5 +1,6 @@
 // dm542 stepper motor driver controller
 #include <linux/module.h>
+#include <linux/notifier.h>
 #include <linux/platform_device.h>
 #include <linux/of.h>
 #include <linux/of_gpio.h>
@@ -8,6 +9,8 @@
 #include <linux/sysfs.h>
 #include <linux/types.h>
 #include <linux/interrupt.h>
+extern int rockchip_pwm_register_oneshot_done_notifier(struct notifier_block *nb);
+extern int rockchip_pwm_unregister_oneshot_done_notifier(struct notifier_block *nb);
 struct dm542_data
 {
     struct gpio_desc *ena_gpio;
@@ -19,14 +22,32 @@ struct dm542_data
     long pulse_count;
     int sw1_irq;
     int sw2_irq;
+    struct notifier_block pwm_notifier;
 };
+static int dm542_pwm_oneshot_done_callback(struct notifier_block *nb,
+                                           unsigned long action, void *data)
+{
+    struct pwm_device *done_pwm = data; // 从 data 参数获取到的 PWM 设备
+    // 通过 container_of 宏，从 notifier_block 指针获取到包含它的 dm542_data 结构体指针
+    struct dm542_data *dm542_priv_data =
+        container_of(nb, struct dm542_data, pwm_notifier);
+
+    // 检查这个通知是否是关于我们 dm542 驱动所使用的 PWM 设备
+    // 确保是正确的 PWM 设备触发的事件
+    if (dm542_priv_data->pwm == done_pwm)
+    {
+        dev_info(dm542_priv_data->dev, "Our PWM device oneshot finished! State: %d\n", done_pwm->state.enabled);
+        sysfs_notify(&(dm542_priv_data->dev->kobj), NULL, "pwm_enable");
+    }
+    return NOTIFY_OK; // 表示成功处理通知
+}
 static ssize_t enable_show(struct device *dev, struct device_attribute *attr,
                            char *buf)
 {
     struct dm542_data *data = dev_get_drvdata(dev);
     int value = gpiod_get_value(data->ena_gpio);
 
-    return scnprintf(buf, PAGE_SIZE, "%d\n", !value); // 0表示使能
+    return scnprintf(buf, PAGE_SIZE, "%d\n", !value); // 由于共阴接法，实际输出0才启动
 }
 
 static ssize_t enable_store(struct device *dev, struct device_attribute *attr,
@@ -234,6 +255,14 @@ static int dm542_probe(struct platform_device *pdev)
     }
 
     // 初始化PWM
+    data->pwm_notifier.notifier_call = dm542_pwm_oneshot_done_callback;
+    ret = rockchip_pwm_register_oneshot_done_notifier(&data->pwm_notifier);
+    if (ret)
+    {
+        dev_err(data->dev, "Failed to register PWM oneshot notifier: %d\n", ret);
+        // 这里可能需要清理之前分配的资源
+        return ret;
+    }
     struct device_node *pul_node = of_get_child_by_name(dev->of_node, "pul");
     if (pul_node)
     {
@@ -321,8 +350,9 @@ static int dm542_probe(struct platform_device *pdev)
 
 static int dm542_remove(struct platform_device *pdev)
 {
-    struct dm542_data *data = platform_get_drvdata(pdev);
 
+    struct dm542_data *data = platform_get_drvdata(pdev);
+    rockchip_pwm_unregister_oneshot_done_notifier(&data->pwm_notifier);
     if (data->pwm->state.enabled)
         pwm_disable(data->pwm);
 
